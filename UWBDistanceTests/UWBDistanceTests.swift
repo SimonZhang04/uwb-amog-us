@@ -76,4 +76,25 @@ final class UWBDistanceTests: XCTestCase {
             XCTAssertEqual(Float(hypot(a.x - b.x, a.y - b.y)), e.distance, accuracy: 0.15, "\(e.a)-\(e.b)")
         }
     }
+
+    func testPolarAheadAndRight() {
+        let ahead = RadarLayout.polar(distance: 2, azimuth: 0)
+        XCTAssertEqual(ahead.x, 0, accuracy: 0.001); XCTAssertEqual(ahead.y, -2, accuracy: 0.001)
+        let right = RadarLayout.polar(distance: 2, azimuth: .pi / 2)
+        XCTAssertEqual(right.x, 2, accuracy: 0.001); XCTAssertEqual(right.y, 0, accuracy: 0.001)
+    }
+
+    func testAnchoredPeerStaysPinnedAndOthersFollow() {
+        let edges = [MeshEdge(a: "b", b: "me", distance: 2), MeshEdge(a: "c", b: "me", distance: 2), MeshEdge(a: "b", b: "c", distance: 2)]
+        let anchor = CGPoint(x: -2, y: 0)   // b is to my left
+        let pos = RadarLayout.layout(me: "me", players: ["me", "b", "c"], edges: edges, previous: [:], anchors: ["b": anchor])
+        XCTAssertEqual(pos["b"]!.x, -2, accuracy: 0.001)
+        XCTAssertEqual(Float(hypot(pos["c"]!.x - pos["b"]!.x, pos["c"]!.y - pos["b"]!.y)), 2, accuracy: 0.15)
+    }
+
+    func testSinglePeerWithoutBearingStartsAhead() {
+        let pos = RadarLayout.layout(me: "me", players: ["me", "b"], edges: [MeshEdge(a: "b", b: "me", distance: 2)], previous: [:])
+        XCTAssertEqual(pos["b"]!.x, 0, accuracy: 0.05)
+        XCTAssertEqual(pos["b"]!.y, -2, accuracy: 0.05)
+    }
 }

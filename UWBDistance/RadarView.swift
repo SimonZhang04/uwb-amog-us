@@ -26,6 +26,8 @@ struct RadarView: View {
     }
 
     private var controls: some View {
+        VStack(spacing: 6) {
+        Text("Up = the way your phone points").font(.caption2).foregroundColor(.secondary)
         HStack(spacing: 12) {
             Button("Lobby") { service.showRadar = false }
             Button("Diagnostics") { showDiagnostics = true }
@@ -37,6 +39,7 @@ struct RadarView: View {
             if let url = service.recordingURL, !service.isRecording {
                 ShareLink(item: url) { Image(systemName: "square.and.arrow.up") }
             }
+        }
         }
         .buttonStyle(.bordered)
         .padding()

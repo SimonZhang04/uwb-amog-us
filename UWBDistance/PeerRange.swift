@@ -19,6 +19,8 @@ struct PeerRange: Identifiable, Equatable {
     var state: PeerState = .connecting
     var distance: Float?
     var direction: SIMD3<Float>?
+    /// Radians, 0 = straight ahead of the phone, positive = to the right. Nil if unknown.
+    var azimuth: Float?
     var errorMessage: String?
     var connected = true
     var remoteSuspended = false
@@ -26,7 +28,7 @@ struct PeerRange: Identifiable, Equatable {
     var updateCount = 0
     var rate: Double = 0   // smoothed updates per second
 
-    var hasDirection: Bool { direction != nil }
+    var hasDirection: Bool { azimuth != nil }
 
     func dotStatus(now: Date, staleAfter: TimeInterval = 2) -> DotStatus {
         if !connected { return .disconnected }

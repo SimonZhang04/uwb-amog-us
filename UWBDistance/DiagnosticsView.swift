@@ -10,6 +10,7 @@ struct DiagnosticsView: View {
                 Section("This device") {
                     row("Precise distance", service.supportsUWB ? "yes" : "no")
                     row("Direction", service.supportsDirection ? "yes" : "no")
+                    row("Extended range", service.supportsExtendedDistance ? "yes" : "no")
                     row("Game", service.gameCode ?? "-")
                     row("Players connected", "\(1 + service.connectedCount) / \(NearbyService.maxPlayers)")
                     row("NI sessions", "\(service.connectedCount)")
@@ -33,7 +34,7 @@ struct DiagnosticsView: View {
     private func peerRow(_ p: PeerRange) -> some View {
         let now = Date()
         let age = p.lastUpdate.map { String(format: "%.1fs ago", now.timeIntervalSince($0)) } ?? "never"
-        let az = p.direction.map { String(format: "%.0f°", RangeMath.arrowAngle(for: $0) * 180 / .pi) }
+        let az = p.azimuth.map { String(format: "%.0f°", $0 * 180 / .pi) }
         return VStack(alignment: .leading, spacing: 2) {
             HStack {
                 Circle().fill(p.dotStatus(now: now).color).frame(width: 10, height: 10)
@@ -43,7 +44,7 @@ struct DiagnosticsView: View {
             }
             Text("\(p.dotStatus(now: now).rawValue) · NI \(p.state.rawValue) · \(p.connected ? "linked" : "disconnected")"
                  + (p.remoteSuspended ? " · backgrounded" : ""))
-            Text("direction: \(az ?? "none") · \(String(format: "%.1f", p.rate)) Hz · last \(age) · \(p.updateCount) updates")
+            Text("bearing: \(az ?? "none") · \(String(format: "%.1f", p.rate)) Hz · last \(age) · \(p.updateCount) updates")
             if let err = p.errorMessage { Text(err).foregroundColor(.red) }
         }
         .font(.caption)

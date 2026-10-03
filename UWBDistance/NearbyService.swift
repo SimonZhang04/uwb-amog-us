@@ -20,6 +20,10 @@ final class NearbyService: ObservableObject {
 
     let supportsUWB = NISession.deviceCapabilities.supportsPreciseDistanceMeasurement
     let supportsDirection = NISession.deviceCapabilities.supportsDirectionMeasurement
+    var supportsExtendedDistance: Bool {
+        if #available(iOS 17.0, *) { return NISession.deviceCapabilities.supportsExtendedDistanceMeasurement }
+        return false
+    }
 
     private var connection: PeerConnection?
     private var sessions: [String: PeerSession] = [:]
@@ -27,6 +31,7 @@ final class NearbyService: ObservableObject {
     /// Tokens that arrived before our own `.connected` callback created the PeerSession.
     private var pendingTokens: [String: Data] = [:]
     private var mesh = MeshModel()
+    private var anchorSmooth: [String: CGPoint] = [:]
     private var timer: Timer?
     private var tickCount = 0
     private var recordRows: [String] = []
@@ -65,6 +70,7 @@ final class NearbyService: ObservableObject {
         connection = nil
         sessions = [:]; peerIDs = [:]; pendingTokens = [:]
         mesh = MeshModel()
+        anchorSmooth = [:]
         peers = []; edges = []; positions = [:]
         gameCode = nil; showRadar = false
     }
@@ -137,7 +143,20 @@ final class NearbyService: ObservableObject {
 
         peers = sessions.values.map(\.range).sorted { $0.id < $1.id }
         edges = mesh.edges(now: now, maxAge: Self.edgeMaxAge)
-        positions = RadarLayout.layout(me: myID, players: [myID] + sessions.keys.sorted(), edges: edges, previous: positions)
+        // Peers I currently have a fresh distance AND angle to are pinned at their true bearing (low-pass filtered).
+        var anchors: [String: CGPoint] = [:]
+        for (name, ps) in sessions {
+            guard ps.range.dotStatus(now: now) == .ranging, let d = ps.range.distance, let az = ps.range.azimuth else {
+                anchorSmooth[name] = nil
+                continue
+            }
+            let target = RadarLayout.polar(distance: d, azimuth: az)
+            let prev = anchorSmooth[name] ?? target
+            anchors[name] = CGPoint(x: prev.x + (target.x - prev.x) * 0.35, y: prev.y + (target.y - prev.y) * 0.35)
+            anchorSmooth[name] = anchors[name]
+        }
+        positions = RadarLayout.layout(me: myID, players: [myID] + sessions.keys.sorted(), edges: edges,
+                                       previous: positions, anchors: anchors)
 
         if isRecording { record(now: now) }
     }
@@ -167,7 +186,7 @@ final class NearbyService: ObservableObject {
         let ts = ISO8601DateFormatter().string(from: now)
         for p in peers {
             let dist = p.distance.map { String(format: "%.3f", $0) } ?? ""
-            let az = p.direction.map { String(format: "%.3f", RangeMath.arrowAngle(for: $0)) } ?? ""
+            let az = p.azimuth.map { String(format: "%.3f", $0) } ?? ""
             recordRows.append("\(ts),\(p.id.playerShortName),\(p.dotStatus(now: now).rawValue),\(dist),\(az),\(String(format: "%.1f", p.rate))")
         }
     }

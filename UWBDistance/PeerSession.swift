@@ -36,7 +36,7 @@ final class PeerSession: NSObject, NISessionDelegate {
         }
         lastPeerTokenData = peerTokenData
         peerToken = token
-        niSession.run(NINearbyPeerConfiguration(peerToken: token))
+        niSession.run(makeConfiguration(token))
         range.state = .searching
         onLog?("\(range.id.playerShortName): running NI config")
     }
@@ -47,6 +47,15 @@ final class PeerSession: NSObject, NISessionDelegate {
         if now.timeIntervalSince(lastResend ?? since) < 8 { return false }
         lastResend = now
         return true
+    }
+
+    private func makeConfiguration(_ token: NIDiscoveryToken) -> NINearbyPeerConfiguration {
+        let config = NINearbyPeerConfiguration(peerToken: token)
+        // Longer range when both phones support it (iPhone 15+, iOS 17+); ignored otherwise.
+        if #available(iOS 17.0, *), NISession.deviceCapabilities.supportsExtendedDistanceMeasurement {
+            config.isExtendedDistanceMeasurementEnabled = true
+        }
+        return config
     }
 
     func setRemoteSuspended(_ suspended: Bool) { range.remoteSuspended = suspended }
@@ -61,6 +70,7 @@ final class PeerSession: NSObject, NISessionDelegate {
         range.connected = false
         range.distance = nil
         range.direction = nil
+        range.azimuth = nil
     }
 
     // MARK: NISessionDelegate
@@ -73,6 +83,14 @@ final class PeerSession: NSObject, NISessionDelegate {
         }
         range.distance = obj.distance
         range.direction = obj.direction
+        // horizontalAngle accounts for how the phone is held; fall back to assuming it's upright.
+        if let angle = obj.horizontalAngle {
+            range.azimuth = angle
+        } else if let d = obj.direction {
+            range.azimuth = Float(RangeMath.arrowAngle(for: d))
+        } else {
+            range.azimuth = nil
+        }
         range.state = obj.distance == nil ? .searching : .ranging
         range.errorMessage = nil
         range.updateCount += 1
@@ -82,8 +100,9 @@ final class PeerSession: NSObject, NISessionDelegate {
     func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
         range.distance = nil
         range.direction = nil
+        range.azimuth = nil
         if reason == .timeout, let peerToken {
-            session.run(NINearbyPeerConfiguration(peerToken: peerToken))
+            session.run(makeConfiguration(peerToken))
             range.state = .lost
             onLog?("\(range.id.playerShortName): NI timeout, retrying")
         } else {
@@ -98,7 +117,7 @@ final class PeerSession: NSObject, NISessionDelegate {
     }
 
     func sessionSuspensionEnded(_ session: NISession) {
-        if let peerToken { session.run(NINearbyPeerConfiguration(peerToken: peerToken)) }
+        if let peerToken { session.run(makeConfiguration(peerToken)) }
     }
 
     func session(_ session: NISession, didInvalidateWith error: Error) {
@@ -111,6 +130,7 @@ final class PeerSession: NSObject, NISessionDelegate {
         range.state = .error
         range.distance = nil
         range.direction = nil
+        range.azimuth = nil
         range.errorMessage = error.localizedDescription
         onLog?("\(range.id.playerShortName): NI error \(error.localizedDescription)")
         onNeedsTokenResend?()
