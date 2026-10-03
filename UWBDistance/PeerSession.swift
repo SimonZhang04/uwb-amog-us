@@ -50,12 +50,8 @@ final class PeerSession: NSObject, NISessionDelegate {
     }
 
     private func makeConfiguration(_ token: NIDiscoveryToken) -> NINearbyPeerConfiguration {
-        let config = NINearbyPeerConfiguration(peerToken: token)
-        // Longer range when both phones support it (iPhone 15+, iOS 17+); ignored otherwise.
-        if #available(iOS 17.0, *), NISession.deviceCapabilities.supportsExtendedDistanceMeasurement {
-            config.isExtendedDistanceMeasurementEnabled = true
-        }
-        return config
+        // Extended distance was tried and made sessions fail immediately (NIERROR_SESSION_FAILED); keep it off.
+        NINearbyPeerConfiguration(peerToken: token)
     }
 
     func setRemoteSuspended(_ suspended: Bool) { range.remoteSuspended = suspended }
@@ -131,8 +127,9 @@ final class PeerSession: NSObject, NISessionDelegate {
         range.distance = nil
         range.direction = nil
         range.azimuth = nil
-        range.errorMessage = error.localizedDescription
-        onLog?("\(range.id.playerShortName): NI error \(error.localizedDescription)")
+        range.errorMessage = "\((error as NSError).domain) code \((error as NSError).code)"
+        let ns = error as NSError
+        onLog?("\(range.id.playerShortName): NI error \(ns.domain) code \(ns.code) \(ns.userInfo[NSLocalizedFailureReasonErrorKey] ?? "")")
         onNeedsTokenResend?()
     }
 }
