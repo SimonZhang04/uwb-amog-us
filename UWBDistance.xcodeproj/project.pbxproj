@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		093BBB1CE6DFAD4A3E7C6A90 /* RadarLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD2AC0CB916415AB33E569A /* RadarLayout.swift */; };
 		17112841BD842BA51E5DB48D /* NearbyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F2EF41319020C081562CC2 /* NearbyService.swift */; };
 		1F66ACE647B33AD020E09C9F /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */; };
 		262106C132189D46F939240C /* UWBDistanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6CE0D49911733DBC272414 /* UWBDistanceTests.swift */; };
+		42E64CA6FA216029BDD4AB83 /* LobbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22ED6B07174DB8850E1AA55 /* LobbyView.swift */; };
 		6E5FFEA7C9621B576935E050 /* PeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54EDF3295394F0792D2A672 /* PeerSession.swift */; };
 		8A6B629B9EDBE975E1376F64 /* UWBDistanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */; };
 		953FF38B7AC55E4BED94F3ED /* PeerRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07A352F105C098D66CC51BC /* PeerRange.swift */; };
-		B94746C7A9008AA4F0279D5C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */; };
+		96B11FF088C6B76E326CE070 /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B36812BF0032DCE53B4852 /* RadarView.swift */; };
+		AB564DF747452C95BFE731F4 /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0F797E789679C020811B64 /* DiagnosticsView.swift */; };
+		BBB79AC101E05DAC77A0941A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E163922F3BA1FD686DAF84B9 /* HomeView.swift */; };
+		D1209B288AEE87D7D74963CC /* MeshModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027CCDB5ECA9EE005C0E1B7E /* MeshModel.swift */; };
+		F425565FF98B61D2506092BA /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA06DCFD51978632B075030A /* Messages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,16 +33,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		027CCDB5ECA9EE005C0E1B7E /* MeshModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshModel.swift; sourceTree = "<group>"; };
 		26820D1444CF72700D4E3F25 /* UWBDistanceTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UWBDistanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBDistanceApp.swift; sourceTree = "<group>"; };
 		5AC57F7219275C1377F17CA9 /* UWBDistance.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = UWBDistance.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		72B36812BF0032DCE53B4852 /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
 		79AE20381AADB9814F38EC9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerConnection.swift; sourceTree = "<group>"; };
-		AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8D0F797E789679C020811B64 /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
 		B5F2EF41319020C081562CC2 /* NearbyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyService.swift; sourceTree = "<group>"; };
 		BE6CE0D49911733DBC272414 /* UWBDistanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBDistanceTests.swift; sourceTree = "<group>"; };
+		BFD2AC0CB916415AB33E569A /* RadarLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarLayout.swift; sourceTree = "<group>"; };
 		C07A352F105C098D66CC51BC /* PeerRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerRange.swift; sourceTree = "<group>"; };
+		C22ED6B07174DB8850E1AA55 /* LobbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyView.swift; sourceTree = "<group>"; };
+		CA06DCFD51978632B075030A /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		D54EDF3295394F0792D2A672 /* PeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSession.swift; sourceTree = "<group>"; };
+		E163922F3BA1FD686DAF84B9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -69,12 +81,18 @@
 		F1CB96568CE246E93409143D /* UWBDistance */ = {
 			isa = PBXGroup;
 			children = (
-				AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */,
+				8D0F797E789679C020811B64 /* DiagnosticsView.swift */,
+				E163922F3BA1FD686DAF84B9 /* HomeView.swift */,
 				79AE20381AADB9814F38EC9B /* Info.plist */,
+				C22ED6B07174DB8850E1AA55 /* LobbyView.swift */,
+				027CCDB5ECA9EE005C0E1B7E /* MeshModel.swift */,
+				CA06DCFD51978632B075030A /* Messages.swift */,
 				B5F2EF41319020C081562CC2 /* NearbyService.swift */,
 				7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */,
 				C07A352F105C098D66CC51BC /* PeerRange.swift */,
 				D54EDF3295394F0792D2A672 /* PeerSession.swift */,
+				BFD2AC0CB916415AB33E569A /* RadarLayout.swift */,
+				72B36812BF0032DCE53B4852 /* RadarView.swift */,
 				2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */,
 			);
 			path = UWBDistance;
@@ -127,6 +145,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					B6FF2B7CF548B5D9BCB9A88A = {
+						DevelopmentTeam = 69U8N3JUUR;
+					};
 				};
 			};
 			buildConfigurationList = B8AF3B40C87EF6C21D54CA27 /* Build configuration list for PBXProject "UWBDistance" */;
@@ -154,11 +175,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B94746C7A9008AA4F0279D5C /* ContentView.swift in Sources */,
+				AB564DF747452C95BFE731F4 /* DiagnosticsView.swift in Sources */,
+				BBB79AC101E05DAC77A0941A /* HomeView.swift in Sources */,
+				42E64CA6FA216029BDD4AB83 /* LobbyView.swift in Sources */,
+				D1209B288AEE87D7D74963CC /* MeshModel.swift in Sources */,
+				F425565FF98B61D2506092BA /* Messages.swift in Sources */,
 				17112841BD842BA51E5DB48D /* NearbyService.swift in Sources */,
 				1F66ACE647B33AD020E09C9F /* PeerConnection.swift in Sources */,
 				953FF38B7AC55E4BED94F3ED /* PeerRange.swift in Sources */,
 				6E5FFEA7C9621B576935E050 /* PeerSession.swift in Sources */,
+				093BBB1CE6DFAD4A3E7C6A90 /* RadarLayout.swift in Sources */,
+				96B11FF088C6B76E326CE070 /* RadarView.swift in Sources */,
 				8A6B629B9EDBE975E1376F64 /* UWBDistanceApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,6 +287,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 69U8N3JUUR;
 				INFOPLIST_FILE = UWBDistance/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to find and connect to nearby phones running this app.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "Used to measure distance to nearby phones.";
@@ -281,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 69U8N3JUUR;
 				INFOPLIST_FILE = UWBDistance/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to find and connect to nearby phones running this app.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "Used to measure distance to nearby phones.";

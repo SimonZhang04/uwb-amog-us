@@ -1,46 +1,73 @@
-# UWB Multi-Peer Distance App (Swift / SwiftUI)
+# Plan: UWB Social-Deduction POC (up to 8 phones for now, radar mesh)
 
-## Context
-Build an iOS app that measures distance (and direction) from one iPhone to several other iPhones (target: 3 phones, each ranging the other two) using Ultra Wideband via Apple's NearbyInteraction framework. Project dir `/Users/simonzh/Documents/SE 490` is empty (greenfield, not a git repo). Xcode 26.3 is installed.
+Supersedes the earlier 2–3 phone plan. We keep most of the existing code and change the pairing flow, the transport layout, and the main UI.
 
-## Constraints to know up front
-- **Simulator cannot do UWB.** Testing needs 3 physical iPhones with U1/U2 chip (iPhone 11 or newer; not SE).
-- `distance` is the robust value. `direction` is only reliable when both devices are U1/U2 and roughly facing each other. Use `NISession.deviceCapabilities` (iOS 16+) to check `supportsPreciseDistanceMeasurement` / `supportsDirectionMeasurement`.
-- NearbyInteraction ranges **one peer per `NISession`**, so N peers means N sessions. Concurrent-session limits are device-dependent; 2 peers per phone is fine, but handle failures gracefully (surface `NIError` per peer rather than crashing).
-- Minimum deployment: iOS 16. Info.plist: `NSNearbyInteractionUsageDescription`, `NSLocalNetworkUsageDescription`, `NSBonjourServices` (`_uwbdist._tcp`, `_uwbdist._udp`).
-- Foreground only in v1 (no background ranging).
+## Goal (today's POC)
+Prove Nearby Interaction works technically for the game: native iPhone app, no server, a "game" of up to 8 phones (10 is the eventual target), a radar-style mesh showing every player and the distance on each edge, graceful handling of dropouts, and enough diagnostics to see UWB's limits (walls, angles, range).
 
-## Approach
-Discovery and token exchange via **MultipeerConnectivity**; ranging via **one NISession per peer**; UI in **SwiftUI** (list of peers).
+## Concerns / decisions to confirm (these change the design)
+1. **MCSession caps at 8 peers (decided: keep ONE shared `MCSession` for now).** That means the POC supports **at most 8 phones per game (self + 7)**, not 10. Accepted trade-off: simplest change, and 8 is enough to answer the UWB questions. To get to 10 later, either switch to one `MCSession` per pair or move the transport to Network.framework. Keep the transport behind a small interface (`send(data,to:)`, `onPeerConnected`, `onPeerDisconnected`, `onData`) so that swap doesn't touch ranging or UI.
+2. **Full mesh at 8 phones = 7 NISessions per phone (28 pairs total; 9 and 45 at 10).** Apple doesn't document a concurrent-session cap, and it may be lower than 9 on some devices. Plan: surface per-peer `NIError`, and add a debug counter. If we hit a cap, fall back to ranging only nearby/closest peers or a ring topology. This is the biggest technical unknown, so it's the thing this POC must answer.
+3. **Each phone only measures its own links.** To draw edges between *other* players, every phone **gossips its distance table** over Multipeer (e.g. 2 Hz, small JSON). Every phone then holds the full pairwise matrix.
+4. **No absolute positions exist.** UWB gives pairwise distance (+ direction relative to *my* phone). Layout = stress-minimisation (MDS/force-directed) over the distance matrix, with me pinned at the center. Direction vectors are used to orient neighbors only when available (they're unreliable and U1/U2-dependent). The layout is mirror-ambiguous and rotates arbitrarily. That's fine for a POC but must be known when we do seating-ring logic later.
+5. **Android is out of scope.** The abstract mentions Android UWB Jetpack. iOS NI and Android UWB don't interoperate in this setup; POC is iPhone-only (iPhone 11+, not SE).
+6. **Pairing is decentralized**, so "up to 8" is enforced by a host-set cap checked when accepting invitations (best-effort, no server).
+7. Last bug: phones were stuck on "searching". I added a token-buffering fix (race where the token arrived before the local session existed); **it is untested on devices and uncommitted**. Step 0 below re-verifies it before the larger refactor.
 
-Flow per pair of phones A and B: each side creates a *dedicated* `NISession` for that peer, sends its `discoveryToken` (archived with `NSKeyedArchiver`) to that peer over the shared `MCSession`, and on receiving the peer's token runs `NINearbyPeerConfiguration(peerToken:)`. A phone with 2 peers therefore holds 2 sessions and sends a separate token per peer (a token must not be reused across sessions).
+## What we keep
+`PeerSession.swift` (one NISession per peer, suspension/invalidation handling), `TokenCoding`, `PeerRange` (extended), `RangeMath`, project setup (`project.yml`, xcodegen), tests. `PeerConnection.swift` and `NearbyService.swift` are refactored; `ContentView.swift` is replaced.
 
-## Files (new Xcode project "UWBDistance")
-- `UWBDistanceApp.swift` – `@main` entry.
-- `ContentView.swift` – SwiftUI list: one row per peer with name, distance (m), direction arrow, state ("connecting / ranging / lost"). Banner for unsupported device.
-- `PeerRange.swift` – model: peer ID, `distance: Float?`, `direction: SIMD3<Float>?`, state enum.
-- `PeerSession.swift` – owns one `NISession` + its delegate for a single peer; publishes `PeerRange`; handles `didUpdate`, `didRemove`, suspension (re-run config), invalidation (recreate session and resend token).
-- `NearbyService.swift` – `ObservableObject` holding `[MCPeerID: PeerSession]`; creates/destroys `PeerSession` on peer connect/disconnect; routes incoming token data to the right `PeerSession`; publishes sorted `[PeerRange]` for the UI.
-- `PeerConnection.swift` – wraps `MCNearbyServiceAdvertiser` + `MCNearbyServiceBrowser` + one `MCSession`; every device advertises and browses; invite tiebreak (lower display name invites) to avoid duplicate invites; auto-accept; connect/disconnect callbacks; `send(token, to:)`.
-- `Info.plist` keys above.
-- `UWBDistanceTests/` – unit tests for token (de)serialization, direction→angle math, and the invite tiebreak (pure functions). Ranging is manual.
+## Changes
 
-## Steps
-1. Create the Xcode project (SwiftUI, iOS 16+), preferably via `xcodegen` + `project.yml` so it's scriptable from the CLI; fall back to the Xcode GUI if unavailable.
-2. Implement `PeerConnection`; verify 3 devices all connect to each other (log peers).
-3. Implement `PeerSession` + `NearbyService`; show raw per-peer distance for 2 phones, then 3.
-4. Add direction arrow, capability checks, per-peer error/suspension/reconnect handling.
-5. Unit tests for pure helpers.
+### Step 0 – Re-verify the 2-phone baseline
+Run the current build with the token-buffering fix on 2 phones; confirm distance appears. If still "searching", add logging (token sent/received, `didUpdate` contents, `NIError`) before proceeding. Don't build multi-phone infrastructure on a broken baseline.
 
-## Installing on the phones (free Apple ID is enough)
-Sign in under Xcode > Settings > Accounts; set a unique bundle ID and Personal Team; for each phone: cable in, Trust, enable Developer Mode, Run from Xcode, then trust the profile in Settings > General > VPN & Device Management. Free installs expire after 7 days (just reinstall). TestFlight needs the paid program ($99/yr) and is only worth it if a phone can't be plugged into your Mac.
+### Step 1 – Pairing: Host / Join by code (`PeerConnection.swift`)
+- Home screen: **Host Game** (generates a 4-letter code, displays it) and **Join Game** (enter code).
+- Service type `uwbdist`; advertise `discoveryInfo = ["code": CODE, "id": uuid]`. Browsers only invite peers whose code matches.
+- Keep the single shared `MCSession`. Keep the deterministic invite tiebreak (`shouldInvite`) so exactly one side invites each pair; every device in the game both advertises and browses, so all pairs link up (full mesh).
+- Cap: a `maxPlayers = 8` check (`MCSession.maximumNumberOfPeers`)  when accepting invitations; reject beyond it.
+- Handle reconnect: if a peer drops and returns, rebuild their `PeerSession` (fresh token) as today.
+
+### Step 2 – Ranging per peer (`PeerSession`, `NearbyService`)
+- Keep one `NISession` per peer. Extend `PeerRange` with: `connectionState` (connected / disconnected), `niState`, `lastUpdate: Date`, `hasDirection`, `updateCount` (for a Hz readout), `errorMessage`.
+- Mark readings **stale** if no update for ~2 s (dot dims, distance shows last known + age).
+- App backgrounded → `sessionWasSuspended` → show "suspended" on the *remote* phones' radars too (broadcast a `status` message).
+
+### Step 3 – Gossip + mesh model (new `MeshModel.swift`)
+- Message envelope (Codable JSON over each pair's MCSession): `.token(Data)`, `.distances([peerID: Float?], timestamp)`, `.status(...)`.
+- `MeshModel`: `[PlayerID: [PlayerID: Float]]` pairwise matrix, merged from own readings + received tables. Edge distance shown = latest fresh value, preferring the lower-id endpoint's reading (or averaging both) so the two phones agree.
+- Pure functions (unit-tested): matrix merge, staleness, symmetric edge selection.
+
+### Step 4 – Layout (new `RadarLayout.swift`)
+- Input: pairwise matrix + my id. Output: `[PlayerID: CGPoint]` in meters.
+- Me at origin. Stress-minimisation (SMACOF or a few hundred force-iteration steps), warm-started from the previous frame to avoid jitter; missing distances use weak springs. Low-pass smoothing on positions.
+- Unit tests with synthetic matrices (known triangle/square → recovered distances within tolerance).
+
+### Step 5 – Radar UI (replace `ContentView.swift`)
+- `HomeView` (host/join) → `LobbyView` (code, joined players list, "Start" shows the radar; for the POC, anyone can enter the radar) → `RadarView`.
+- `RadarView` (SwiftUI `Canvas`): concentric range rings, my dot (center, accent color), other dots (named/initial), **edges to all others with a distance label at the midpoint** (`1.42 m`). Auto-zoom to fit all dots; pinch to zoom optional.
+- Dot colors: green = ranging, yellow = stale/searching, **red = NI lost / out of UWB range**, **grey = app closed / Multipeer disconnected**.
+- Bottom sheet / toggle **Diagnostics**: per-peer table: state, distance, direction yes/no (+ azimuth), update Hz, last update age, NIError, my capabilities. Plus a "session count / max reached" line to answer concern #2.
+- Optional: **Record CSV** button (timestamp, peer, distance, direction) shareable via the share sheet, to analyse wall/angle tests later.
+
+### Step 6 – Tests
+- Unit tests: invite tiebreak with 8 ids (exactly one inviter per pair), message encode/decode, mesh merge/staleness, layout recovery, player cap.
+- Existing tests stay.
+
+### Step 7 – Docs
+- **`INSTRUCTIONS.md`**: install on personal phones (Xcode + free Apple ID, Personal Team, unique bundle ID, cable, Trust, Developer Mode, trust profile in Settings, 7-day expiry, wireless debugging), how to host/join a game, how to run the wall/angle tests, known limitations.
+- **`CLAUDE.md`**: game summary (from the abstract: Jackbox-style host screen, seated phases with neighbor passive abilities, Free Time with proximity abilities, auto-moderated event log), the POC's scope, architecture map (files above), build/test commands (`xcodegen generate`, `xcodebuild test ...`), gotchas (simulator has no UWB, one NISession per peer, token per session never reused, 8-peer MCSession limit, direction is unreliable, xcodegen resets signing team). **Game rules aren't specified yet**, so CLAUDE.md will say so rather than invent them.
+
+## Files
+New: `MeshModel.swift`, `RadarLayout.swift`, `Messages.swift`, `HomeView.swift`, `LobbyView.swift`, `RadarView.swift`, `DiagnosticsView.swift`, `INSTRUCTIONS.md`, `CLAUDE.md`.
+Modified: `PeerConnection.swift`, `NearbyService.swift`, `PeerSession.swift`, `PeerRange.swift`, `UWBDistanceApp.swift`, `project.yml` (no new Info.plist keys expected), tests.
+Removed: `ContentView.swift`.
 
 ## Verification
-- `xcodebuild -scheme UWBDistance -destination 'generic/platform=iOS' build` compiles; `xcodebuild test` on a simulator runs the unit tests.
-- Manual with 3 iPhones: grant Local Network + Nearby Interaction prompts; each phone lists the other two; distances track moves (~0.5 m, 1 m, 3 m vs. tape measure) and agree between the two ends of a pair; turn one phone away/pocket it and confirm its row goes to "lost" and recovers; kill and relaunch one app and confirm the others re-pair.
-- Simulator only confirms the UI and the "UWB not supported" state.
+- `xcodebuild test` (simulator) passes the new unit tests; `xcodebuild build -destination 'generic/platform=iOS'` succeeds.
+- On devices (the POC's real test): 2 phones first, then 3, then as many as available up to 8. Check: all join with the same code; every phone shows every other phone with edges and labels; distances agree across both ends (within ~10–20 cm); closing an app turns that dot grey on the others within a few seconds and it recovers on reopen; walking behind a wall → red/stale; diagnostics shows direction availability and update rate; note the max concurrent sessions reached.
+- Record findings (accuracy, wall behavior, session cap) in `CLAUDE.md` after the test.
 
-## Risks
-- Distance becomes `nil` without line-of-sight or at steep angles; UI shows "searching".
-- Concurrent session limit may cap peers on some devices; surface the error per peer.
-- Reconnect races (both sides recreate sessions at once); mitigated by the deterministic invite tiebreak and by always resending a fresh token after a session is recreated.
+## Out of scope
+Roles, abilities, phases, host display screen, Android, background ranging, any server.
