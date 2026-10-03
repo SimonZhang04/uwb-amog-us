@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		17112841BD842BA51E5DB48D /* NearbyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F2EF41319020C081562CC2 /* NearbyService.swift */; };
+		1F66ACE647B33AD020E09C9F /* PeerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */; };
+		262106C132189D46F939240C /* UWBDistanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6CE0D49911733DBC272414 /* UWBDistanceTests.swift */; };
+		6E5FFEA7C9621B576935E050 /* PeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54EDF3295394F0792D2A672 /* PeerSession.swift */; };
+		8A6B629B9EDBE975E1376F64 /* UWBDistanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */; };
+		953FF38B7AC55E4BED94F3ED /* PeerRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07A352F105C098D66CC51BC /* PeerRange.swift */; };
+		B94746C7A9008AA4F0279D5C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EDFE92E30411C916C89EBD85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000C677F6116F3732B0EF2FE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B6FF2B7CF548B5D9BCB9A88A;
+			remoteInfo = UWBDistance;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		26820D1444CF72700D4E3F25 /* UWBDistanceTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = UWBDistanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBDistanceApp.swift; sourceTree = "<group>"; };
+		5AC57F7219275C1377F17CA9 /* UWBDistance.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = UWBDistance.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79AE20381AADB9814F38EC9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerConnection.swift; sourceTree = "<group>"; };
+		AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B5F2EF41319020C081562CC2 /* NearbyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyService.swift; sourceTree = "<group>"; };
+		BE6CE0D49911733DBC272414 /* UWBDistanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UWBDistanceTests.swift; sourceTree = "<group>"; };
+		C07A352F105C098D66CC51BC /* PeerRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerRange.swift; sourceTree = "<group>"; };
+		D54EDF3295394F0792D2A672 /* PeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerSession.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1291ABF0C0A3E56F1571FB6F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5AC57F7219275C1377F17CA9 /* UWBDistance.app */,
+				26820D1444CF72700D4E3F25 /* UWBDistanceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3514540546FE550519F76580 = {
+			isa = PBXGroup;
+			children = (
+				F1CB96568CE246E93409143D /* UWBDistance */,
+				BCC8809DC99D021AB0E1B146 /* UWBDistanceTests */,
+				1291ABF0C0A3E56F1571FB6F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCC8809DC99D021AB0E1B146 /* UWBDistanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				BE6CE0D49911733DBC272414 /* UWBDistanceTests.swift */,
+			);
+			path = UWBDistanceTests;
+			sourceTree = "<group>";
+		};
+		F1CB96568CE246E93409143D /* UWBDistance */ = {
+			isa = PBXGroup;
+			children = (
+				AB1BB51FA9D9EF9C253E9C4C /* ContentView.swift */,
+				79AE20381AADB9814F38EC9B /* Info.plist */,
+				B5F2EF41319020C081562CC2 /* NearbyService.swift */,
+				7C5AFB7A6F441AA37B0DC8C3 /* PeerConnection.swift */,
+				C07A352F105C098D66CC51BC /* PeerRange.swift */,
+				D54EDF3295394F0792D2A672 /* PeerSession.swift */,
+				2AF353E1EA511E90216FE22A /* UWBDistanceApp.swift */,
+			);
+			path = UWBDistance;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3056B9B2D736B6A96421E2A1 /* UWBDistanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A380EB0FFA898B6CCDEF9EDB /* Build configuration list for PBXNativeTarget "UWBDistanceTests" */;
+			buildPhases = (
+				BF9F8C15993FB90046FCAF50 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B4A6852950E572A93A48F7FB /* PBXTargetDependency */,
+			);
+			name = UWBDistanceTests;
+			packageProductDependencies = (
+			);
+			productName = UWBDistanceTests;
+			productReference = 26820D1444CF72700D4E3F25 /* UWBDistanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B6FF2B7CF548B5D9BCB9A88A /* UWBDistance */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60A421B2CC468F99E676FCE9 /* Build configuration list for PBXNativeTarget "UWBDistance" */;
+			buildPhases = (
+				2D9535DB7DEE05AA44C37448 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UWBDistance;
+			packageProductDependencies = (
+			);
+			productName = UWBDistance;
+			productReference = 5AC57F7219275C1377F17CA9 /* UWBDistance.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000C677F6116F3732B0EF2FE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = B8AF3B40C87EF6C21D54CA27 /* Build configuration list for PBXProject "UWBDistance" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3514540546FE550519F76580;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1291ABF0C0A3E56F1571FB6F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6FF2B7CF548B5D9BCB9A88A /* UWBDistance */,
+				3056B9B2D736B6A96421E2A1 /* UWBDistanceTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D9535DB7DEE05AA44C37448 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B94746C7A9008AA4F0279D5C /* ContentView.swift in Sources */,
+				17112841BD842BA51E5DB48D /* NearbyService.swift in Sources */,
+				1F66ACE647B33AD020E09C9F /* PeerConnection.swift in Sources */,
+				953FF38B7AC55E4BED94F3ED /* PeerRange.swift in Sources */,
+				6E5FFEA7C9621B576935E050 /* PeerSession.swift in Sources */,
+				8A6B629B9EDBE975E1376F64 /* UWBDistanceApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF9F8C15993FB90046FCAF50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				262106C132189D46F939240C /* UWBDistanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B4A6852950E572A93A48F7FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B6FF2B7CF548B5D9BCB9A88A /* UWBDistance */;
+			targetProxy = EDFE92E30411C916C89EBD85 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2E10D5CC9FE1EC5F955D2630 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonzh.UWBDistanceTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UWBDistance.app/UWBDistance";
+			};
+			name = Debug;
+		};
+		4C996228EF1AB34C64A35DB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		94C5859BD91F3FB2D62BB4A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = UWBDistance/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to find and connect to nearby phones running this app.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "Used to measure distance to nearby phones.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonzh.uwbdistance;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CEF7B2D910742F572898CD27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = UWBDistance/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Used to find and connect to nearby phones running this app.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "Used to measure distance to nearby phones.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonzh.uwbdistance;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D752AE20D35C133AEA3FC7D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonzh.UWBDistanceTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UWBDistance.app/UWBDistance";
+			};
+			name = Release;
+		};
+		DA9EAC8B64BC9BD2E4CE7BF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		60A421B2CC468F99E676FCE9 /* Build configuration list for PBXNativeTarget "UWBDistance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94C5859BD91F3FB2D62BB4A5 /* Debug */,
+				CEF7B2D910742F572898CD27 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A380EB0FFA898B6CCDEF9EDB /* Build configuration list for PBXNativeTarget "UWBDistanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E10D5CC9FE1EC5F955D2630 /* Debug */,
+				D752AE20D35C133AEA3FC7D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B8AF3B40C87EF6C21D54CA27 /* Build configuration list for PBXProject "UWBDistance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA9EAC8B64BC9BD2E4CE7BF7 /* Debug */,
+				4C996228EF1AB34C64A35DB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000C677F6116F3732B0EF2FE /* Project object */;
+}
