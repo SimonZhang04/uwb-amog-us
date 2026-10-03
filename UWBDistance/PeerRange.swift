@@ -44,4 +44,20 @@ enum RangeMath {
     static func arrowAngle(for direction: SIMD3<Float>) -> Double {
         Double(atan2(direction.x, -direction.z))
     }
+
+    /// Bearing in radians (0 = ahead of the phone, positive = right) from a device-frame direction vector,
+    /// using gravity so it works held upright OR flat. "Ahead" is the rear-camera axis when upright and the
+    /// top edge when flat. Nil if the vector is (almost) vertical and has no horizontal part.
+    static func azimuth(direction d: SIMD3<Float>, gravity g: SIMD3<Float>) -> Float? {
+        let gl = simd_length(g)
+        guard gl > 0.5 else { return nil }
+        let up = -g / gl
+        let forwardAxis: SIMD3<Float> = abs(up.z) < 0.7 ? SIMD3(0, 0, -1) : SIMD3(0, 1, 0)
+        func horizontal(_ v: SIMD3<Float>) -> SIMD3<Float> { v - simd_dot(v, up) * up }
+        let fh = horizontal(forwardAxis), dh = horizontal(d)
+        guard simd_length(fh) > 1e-3, simd_length(dh) > 1e-3 else { return nil }
+        let f = simd_normalize(fh)
+        let right = simd_cross(f, up)
+        return atan2(simd_dot(dh, right), simd_dot(dh, f))
+    }
 }

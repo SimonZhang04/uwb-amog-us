@@ -11,6 +11,8 @@ final class PeerSession: NSObject, NISessionDelegate {
     private var lastResend: Date?
 
     var onLog: ((String) -> Void)?
+    /// Current gravity vector in this phone's frame (CoreMotion), used to turn `direction` into a bearing.
+    var gravityProvider: (() -> SIMD3<Float>?)?
     /// Called when the local token changed (session recreated) and must be re-sent to the peer.
     var onNeedsTokenResend: (() -> Void)?
 
@@ -79,11 +81,11 @@ final class PeerSession: NSObject, NISessionDelegate {
         }
         range.distance = obj.distance
         range.direction = obj.direction
-        // horizontalAngle accounts for how the phone is held; fall back to assuming it's upright.
+        // horizontalAngle already accounts for how the phone is held; otherwise derive it from gravity.
         if let angle = obj.horizontalAngle {
             range.azimuth = angle
-        } else if let d = obj.direction {
-            range.azimuth = Float(RangeMath.arrowAngle(for: d))
+        } else if let d = obj.direction, let g = gravityProvider?() {
+            range.azimuth = RangeMath.azimuth(direction: d, gravity: g)
         } else {
             range.azimuth = nil
         }

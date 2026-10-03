@@ -92,6 +92,19 @@ final class UWBDistanceTests: XCTestCase {
         XCTAssertEqual(Float(hypot(pos["c"]!.x - pos["b"]!.x, pos["c"]!.y - pos["b"]!.y)), 2, accuracy: 0.15)
     }
 
+    func testAzimuthUprightAndFlat() {
+        let upright = SIMD3<Float>(0, -1, 0)   // gravity when held upright
+        let flat = SIMD3<Float>(0, 0, -1)      // gravity when lying screen-up
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(0, 0, -1), gravity: upright)!, 0, accuracy: 0.01)
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(1, 0, 0), gravity: upright)!, .pi / 2, accuracy: 0.01)
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(0, 1, 0), gravity: flat)!, 0, accuracy: 0.01)
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(1, 0, 0), gravity: flat)!, .pi / 2, accuracy: 0.01)
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(-1, 0, 0), gravity: flat)!, -.pi / 2, accuracy: 0.01)
+        // a flat phone with a vector tilted down toward the table must NOT collapse to "strictly right"
+        XCTAssertEqual(RangeMath.azimuth(direction: SIMD3(0.1, 0.9, -0.4), gravity: flat)!, atan2(0.1, 0.9), accuracy: 0.01)
+        XCTAssertNil(RangeMath.azimuth(direction: SIMD3(0, 0, 1), gravity: flat))
+    }
+
     func testSinglePeerWithoutBearingStartsAhead() {
         let pos = RadarLayout.layout(me: "me", players: ["me", "b"], edges: [MeshEdge(a: "b", b: "me", distance: 2)], previous: [:])
         XCTAssertEqual(pos["b"]!.x, 0, accuracy: 0.05)

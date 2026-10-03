@@ -2,6 +2,8 @@ import Foundation
 import MultipeerConnectivity
 import NearbyInteraction
 import CoreGraphics
+import CoreMotion
+import simd
 
 @MainActor
 final class NearbyService: ObservableObject {
@@ -34,6 +36,7 @@ final class NearbyService: ObservableObject {
     private var mesh = MeshModel()
     private var anchorSmooth: [String: CGPoint] = [:]
     private var timer: Timer?
+    private let motion = CMMotionManager()
     private var tickCount = 0
     private var recordRows: [String] = []
 
@@ -58,6 +61,10 @@ final class NearbyService: ObservableObject {
         gameCode = code
         log("started game \(code) as \(myID.playerShortName)")
         conn.start()
+        if motion.isDeviceMotionAvailable {
+            motion.deviceMotionUpdateInterval = 0.05
+            motion.startDeviceMotionUpdates()
+        }
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tick() }
         }
@@ -65,6 +72,7 @@ final class NearbyService: ObservableObject {
 
     func leave() {
         timer?.invalidate(); timer = nil
+        motion.stopDeviceMotionUpdates()
         if isRecording { stopRecording() }
         sessions.values.forEach { $0.stop() }
         connection?.stop()
@@ -88,6 +96,9 @@ final class NearbyService: ObservableObject {
         sessions[name]?.stop()
         let ps = PeerSession(peerName: name)
         ps.onLog = { [weak self] in self?.log($0) }
+        ps.gravityProvider = { [motion] in
+            motion.deviceMotion.map { SIMD3<Float>(Float($0.gravity.x), Float($0.gravity.y), Float($0.gravity.z)) }
+        }
         ps.onNeedsTokenResend = { [weak self, weak ps] in
             guard let data = ps?.localTokenData else { return }
             self?.sendToken(data, to: name)
@@ -153,7 +164,7 @@ final class NearbyService: ObservableObject {
             }
             let target = RadarLayout.polar(distance: d, azimuth: az)
             let prev = anchorSmooth[name] ?? target
-            anchors[name] = CGPoint(x: prev.x + (target.x - prev.x) * 0.35, y: prev.y + (target.y - prev.y) * 0.35)
+            anchors[name] = CGPoint(x: prev.x + (target.x - prev.x) * 0.25, y: prev.y + (target.y - prev.y) * 0.25)
             anchorSmooth[name] = anchors[name]
         }
         positions = RadarLayout.layout(me: myID, players: [myID] + sessions.keys.sorted(), edges: edges,
