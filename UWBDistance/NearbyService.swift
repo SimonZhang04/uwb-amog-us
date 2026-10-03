@@ -20,6 +20,7 @@ final class NearbyService: ObservableObject {
 
     let supportsUWB = NISession.deviceCapabilities.supportsPreciseDistanceMeasurement
     let supportsDirection = NISession.deviceCapabilities.supportsDirectionMeasurement
+    let supportsCameraAssistance = NISession.deviceCapabilities.supportsCameraAssistance
     var supportsExtendedDistance: Bool {
         if #available(iOS 17.0, *) { return NISession.deviceCapabilities.supportsExtendedDistanceMeasurement }
         return false

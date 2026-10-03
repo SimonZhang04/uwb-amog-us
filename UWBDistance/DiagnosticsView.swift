@@ -10,6 +10,7 @@ struct DiagnosticsView: View {
                 Section("This device") {
                     row("Precise distance", service.supportsUWB ? "yes" : "no")
                     row("Direction", service.supportsDirection ? "yes" : "no")
+                    row("Camera assistance", service.supportsCameraAssistance ? "yes" : "no")
                     row("Extended range", service.supportsExtendedDistance ? "yes" : "no")
                     row("Game", service.gameCode ?? "-")
                     row("Players connected", "\(1 + service.connectedCount) / \(NearbyService.maxPlayers)")
